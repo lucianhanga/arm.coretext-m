@@ -1,0 +1,10 @@
+
+disassembly the binary 
+$ objdump -D  printf_params.o 
+
+get the data section from the ELF file and display it as hexdump+ascii
+$ objdump -sj  .data  printf_params.o 
+$ readelf -x .data printf_params.o
+
+generate the assembly code 
+$ gcc -S -fverbose-asm -O0 -o printf_params.c.assembly printf_params.c
