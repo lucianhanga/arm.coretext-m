@@ -11,6 +11,9 @@
 		},
 		{
 			"path": "docs"
+		},
+		{
+			"path": "load_store_multi"
 		}
 	],
 	"settings": {}
