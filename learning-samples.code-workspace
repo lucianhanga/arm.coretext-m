@@ -8,6 +8,9 @@
 		},
 		{
 			"path": "simple_c"
+		},
+		{
+			"path": "docs"
 		}
 	],
 	"settings": {}
