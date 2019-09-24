@@ -13,7 +13,7 @@
 2.2. [stmia & stmea](#stmia-stmea)
 2.3. [stmda & stmed](#stmda-stmed)
 2.4. [ldmda & ldmfa](#ldmda-ldmfa)
-
+2.5. [the rest ...](#simd-the-rest)
 
 <a name="arm-addressing-modes"></a>
 #### 1. _ARM_ Addressing Modes ####
@@ -257,6 +257,7 @@ display2:                   @ display the values
 [[toc]](#table-of-contents)
 
 
+
 <a name="stmia-stmea"></a>
 ##### 2.2. stmia & stmea #####
 
@@ -288,10 +289,11 @@ In the **array1** store twice the contents of the **r0**, **r1** and **r2**.
 [[toc]](#table-of-contents)
 
 
+
 <a name="stmda-stmed"></a>
 ##### 2.3. stmda & stmed #####
 
-**stmia** - store multiple _decrease after_
+**stmia** - store multiple _decrement after_
 **stmea** - store multiple _emptpy descending_
 
 Store registers to memory, starting with the specified address from **Rd** and *decrement* the address *after* each store. If the **!** is present store the new calculated address in the **Rd** register.
@@ -330,10 +332,11 @@ _Sample_:
 [[toc]](#table-of-contents)
 
 
+
 <a name="ldmda-ldmfa"></a>
 ##### 2.4. ldmda & ldmfa #####
 
-**ldmda** - load multiple _decrease after_
+**ldmda** - load multiple _decrement after_
 **ldmfa** - load multiple _full asscending_
 
 Load registers from memory, starting with the specified address from **Rd** and decrement the address *after* each load. If the **!** is present store the new calculated address in the **Rd** register.
@@ -370,3 +373,26 @@ _Sample_:
 ```
 [[toc]](#table-of-contents)
 
+<a name="simd-the-rest"></a>
+##### 2.5. the rest ... #####
+
+There are another four SIMD instructions which are similar with the ones specified above with only one small diference: the moment when the address is calculated.  **ia** - **increment after**, respectively **da** - **decrement after**, means that the address is calculated after the data transfer happened. 
+
+In case of the remining instructions which have the subfix **ib** - **increment before**, respectively **db** - **decrement before**, the address is calculated before the data transfer. 
+
+**ldmib** - load multiple _increment before_
+**ldmed** - load multiple _empty descending_
+
+
+**ldmdb** - load multiple _decrement before_
+**ldmea** - load multiple _empty ascending_
+
+
+**stmib** - store multiple _increment before_
+**stmfa** - store multiple _full ascending_
+
+
+**stmdb** - store multiple _decrement before_
+**stmfd** - store multiple _full descending_
+
+[[toc]](#table-of-contents)
