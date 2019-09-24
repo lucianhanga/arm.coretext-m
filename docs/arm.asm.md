@@ -1,4 +1,5 @@
-#### Table of Contents
+<a name="table-of-contents"></a>
+#### Table of Contents ####
 
 1. [_ARM_ Addressing Modes](#arm-addressing-modes)
 1.1. [Imediate Offset / Register Immediate](#immediate-offset)
@@ -7,12 +8,16 @@
 1.4. [Scaled Register Pre-Indexed / Register Pre-Indexed](#scaled-register-pre-indexed)
 1.5. [Immediate Post-Indexed](#immediate-post-indexed)
 1.6. [Scaled Register Post-Indexed / Register Post-Indexed](#scaled-register-post-indexed)
+2. [SIMD Single Instruction Multiple Data](#single-instruction-multiple-data)
+2.1. [ldmia & ldmfd](#ldmia-ldmfd)
+2.2. [stmia & stmea](#stmia-stmea)
+
 
 <a name="arm-addressing-modes"></a>
 #### 1. _ARM_ Addressing Modes ####
 
 <a name="immediate-offset"></a>
-##### 1.1. Immediate Offset #####
+##### 1.1. Immediate Offset ##### 
 
 _Syntax_:
 
@@ -33,6 +38,9 @@ _Samples_:
     ldr     r0, [r1]            @ load in r0 the value from address r1
     str     r0, [r1]            @  store the r0 at the address r1
 ```
+[[toc]](#table-of-contents)
+
+
 
 <a name="scaled-register-offset"></a>
 ##### 1.2. Scaled Register Offset #####
@@ -84,6 +92,8 @@ matrix_byte:    .byte   0x01, 0x02, 0x03, 0x04
     mov     r1, #3
     ldr     r5, [r0, r1] 
 ```
+[[toc]](#table-of-contents)
+
 
 <a name="immediate-pre-indexed"></a>
 ##### 1.3. Immediate Pre-Indexed #####
@@ -115,6 +125,8 @@ var5_d:	   .space 	4*4, 0x00
     ldr     r2, [r0, #1*4]!     @ load the next  (4th)
     str     r2, [r1, #1*4]!     @ load the next 
 ```
+[[toc]](#table-of-contents)
+
 
 <a name="scaled-register-pre-indexed"></a>
 ##### 1.4. Scaled Register Pre-Indexed #####
@@ -135,6 +147,8 @@ Also the short version of this command is  when the `<shitf_op> #<shift>` is not
 **Register Pre-Indexed**
 and it has the following syntax:
 `[Rn, ±Rm]!`
+[[toc]](#table-of-contents)
+
 
 
 <a name="immediate-post-indexed"></a>
@@ -164,6 +178,8 @@ The following sample copies the values of the **var6** array into the  **var6_d*
     ldr     r2, [r0], #1*4      @ load the first value from source
     str     r2, [r1], #1*4      @ store it at destination
 ```
+[[toc]](#table-of-contents)
+
 
 <a name="scaled-register-post-indexed"></a>
 ##### 1.6. Scaled Register Post-Indexed #####
@@ -195,3 +211,80 @@ Also the short version of this command is  when the `<shitf_op> #<shift>` is not
 **Register Post-Indexed**
 and it has the following syntax:
 `[Rn], ±Rm`
+[[toc]](#table-of-contents)
+
+
+
+<a name="single-instruction-multiple-data"></a>
+#### 2. SIMD Single Instruction Multiple Data ####
+
+<a name="ldmia-ldmfd"></a>
+##### 2.1. ldmia & ldmfd #####
+
+**ldmia** - load multiple _increment after_ 
+**ldmfd** - load multiple _full descent_
+
+Load registers from memory, starting with the specified address from **Rd** and increment the address *after* each load. If the **!** is present store the new calculated address in the **Rd** register.
+
+_Pseudo code_:
+$\ \ \ \ addr\ \leftarrow \ Rd$
+$\ \ \ \ for\ all\ i \in\ register\_list\ do$
+$\ \ \ \ \ \ \ \ i\leftarrow Mem[addr]$
+$\ \ \ \ \ \ \ \ addr\leftarrow addr +\ 4$
+$\ \ \ \ endfor$
+$\ \ \ \ if\ !\ is\ present\ then$
+$\ \ \ \ \ \ \ \ Rd\ \leftarrow \ addr$
+
+_Sample_:
+Load the register range **r1-r3** with the values from the **array2** and display them. Repeat the operation for the next three values from the **array2**.
+```assembly
+    ldr     r4,  =array2    @ load the addr. of the array2 
+    ldmia   r4!, {r1-r3}    @ multiple load the r1, r2, r3, with
+                            @ increment after and Rd update
+display1:                   @ display the values
+    push    {r4}            @ preserve the r4;  might be overriten
+    ldr     r0, =fmt2
+    bl      printf
+    pop     {r4}            @ recover the r4
+    ldmia   r4, {r1-r3}     @ multiple load the r1, r2, r3, with
+                            @ increment after
+display2:                   @ display the values
+    ldr     r0, =fmt2
+            bl	printf
+```
+[[toc]](#table-of-contents)
+
+
+<a name="stmia-stmea"></a>
+##### 2.2. stmia & stmea #####
+
+**stmia** - store multiple _increment after_
+**stmea** - store multiple _emptpy ascending_
+
+Store registers to memory, starting with the specified address from **Rd** and increment the address *after* each load. If the **!** is present store the new calculated address in the **Rd** register.
+
+_Pseudo code_:
+$\ \ \ \ addr\ \leftarrow \ Rd$
+$\ \ \ \ for\ all\ i \in\ register\_list\ do $
+$\ \ \ \ \ \ \ \ Mem[addr] \leftarrow i $
+$\ \ \ \ \ \ \ \ addr\leftarrow addr +\ 4 $
+$\ \ \ \ endfor$
+$\ \ \ \ if\ !\ is\ present\ then$
+$\ \ \ \ \ \ \ \ Rd\ \leftarrow \ addr$
+
+_Sample_: 
+In the **array1** store twice the contents of the **r0**, **r1** and **r2**.
+```assembly
+    ldr     r4, =array1         @ load the array address
+    stmia   r4!, {r0, r1, r2}   @ store at the address from r4
+                                @ and 'Increment After' the address
+                                @ with 3*4 bytes and store it back to r4
+    stmia   r4, {r0, r1, r2}    @ continue storing the values of the 3
+                                @ registers further in the array
+                                @ but this time don't update the r4
+```
+[[toc]](#table-of-contents)
+
+
+
+
