@@ -11,6 +11,8 @@
 2. [SIMD Single Instruction Multiple Data](#single-instruction-multiple-data)
 2.1. [ldmia & ldmfd](#ldmia-ldmfd)
 2.2. [stmia & stmea](#stmia-stmea)
+2.3. [stmda & stmed](#stmda-stmed)
+2.4. [ldmda & ldmfa](#ldmda-ldmfa)
 
 
 <a name="arm-addressing-modes"></a>
@@ -286,5 +288,85 @@ In the **array1** store twice the contents of the **r0**, **r1** and **r2**.
 [[toc]](#table-of-contents)
 
 
+<a name="stmda-stmed"></a>
+##### 2.3. stmda & stmed #####
 
+**stmia** - store multiple _decrease after_
+**stmea** - store multiple _emptpy descending_
+
+Store registers to memory, starting with the specified address from **Rd** and *decrement* the address *after* each store. If the **!** is present store the new calculated address in the **Rd** register.
+
+**Note**
+Its important to peek atention to the order in which the registers from the list are stored into memory. If its **decrement before/after** then the last register is stored first and then the one before it and so on. If its **increment before/after** the first register is stoed in the memory and then the next one and so on.
+The registers in the register_list should be in order, even if they are not consecutive. Otherwise the assembler will show a *warning*, ignore the  order they were specified and take them in the appropriate order:
+```
+load_store_multi.s:91: Warning: register range not in ascending order
+```
+
+_Pseudo code_:
+$\ \ \ \ addr\ \leftarrow \ Rd$
+$\ \ \ \ for\ all\ i \in\ register\_list\ do $
+$\ \ \ \ \ \ \ \ Mem[addr] \leftarrow i $
+$\ \ \ \ \ \ \ \ addr\leftarrow addr -\ 4 $
+$\ \ \ \ endfor$
+$\ \ \ \ if\ !\ is\ present\ then$
+$\ \ \ \ \ \ \ \ Rd\ \leftarrow \ addr$
+
+_Sample_: 
+
+```assembly
+    ldr     r0, =array_fwd              @ load in r0 the address of the
+    add     r0, r0, #array_fwd_bsize    @ last element of the array_fwd
+    sub     r0, r0, #4                  @	 
+    ldr     r1,	=array_rew              @ load in r1 the address of the
+    add     r1, r1, #array_fwd_bsize    @ last element of the array_rew
+    sub     r1, r1, #4                  @
+    @  make the transfer of data between the arrays
+    ldmda   r0!, {r2-r5}                @ transfer 4 words btwreen arrays
+    stmda   r1!, {r2-r5}
+    ldmda   r0!, {r2-r5}                @ transfer another 4 words
+    stmda   r1!, {r2-r5}
+```
+[[toc]](#table-of-contents)
+
+
+<a name="ldmda-ldmfa"></a>
+##### 2.4. ldmda & ldmfa #####
+
+**ldmda** - load multiple _decrease after_
+**ldmfa** - load multiple _full asscending_
+
+Load registers from memory, starting with the specified address from **Rd** and decrement the address *after* each load. If the **!** is present store the new calculated address in the **Rd** register.
+
+**Note**
+Its important to peek atention to the order in which the registers from the list are loaded. If its **decrement before/after** then the last register is filled first and then the one before it and so on. If its **increment before/after** the first register is filled and then the next one and so on.
+The registers in the register_list should be in order, even if they are not consecutive. Otherwise the assembler will show a *warning*, ignore the  order they were specified and take them in the appropriate order:
+```
+load_store_multi.s:91: Warning: register range not in ascending order
+```
+_Pseudo code_:
+$\ \ \ \ addr\ \leftarrow \ Rd$
+$\ \ \ \ for\ all\ i \in\ register\_list\ do$
+$\ \ \ \ \ \ \ \ i\leftarrow Mem[addr]$
+$\ \ \ \ \ \ \ \ addr\leftarrow addr -\ 4$
+$\ \ \ \ endfor$
+$\ \ \ \ if\ !\ is\ present\ then$
+$\ \ \ \ \ \ \ \ Rd\ \leftarrow \ addr$
+
+_Sample_: 
+
+```assembly
+    ldr     r0, =array_fwd              @ load in r0 the address of the
+    add     r0, r0, #array_fwd_bsize    @ last element of the array_fwd
+    sub     r0, r0, #4                  @	 
+    ldr     r1,	=array_rew              @ load in r1 the address of the
+    add     r1, r1, #array_fwd_bsize    @ last element of the array_rew
+    sub     r1, r1, #4                  @
+    @  make the transfer of data between the arrays
+    ldmda   r0!, {r2-r5}                @ transfer 4 words btwreen arrays
+    stmda   r1!, {r2-r5}
+    ldmda   r0!, {r2-r5}                @ transfer another 4 words
+    stmda   r1!, {r2-r5}
+```
+[[toc]](#table-of-contents)
 
