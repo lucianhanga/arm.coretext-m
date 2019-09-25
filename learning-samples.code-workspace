@@ -1,26 +1,36 @@
 {
 	"folders": [
-		{
-			"path": "printf_params"
-		},
-		{
-			"path": "addressing"
-		},
-		{
-			"path": "simple_c"
-		},
-		{
-			"path": "docs"
-		},
-		{
-			"path": "load_store_multi"
-		},
-		{
-			"path": "pseudo-instructions"
-		},
-		{
-			"path": "second-operand"
-		}
-	],
+        {
+            "name": "printf_params",
+            "path": "printf_params"
+        },
+        {
+            "name": "addressing",
+            "path": "addressing"
+        },
+        {
+            "name": "simple_c",
+            "path": "simple_c"
+        },
+        {
+            "name": "load_store_multi",
+            "path": "load_store_multi"
+        },
+        {
+            "name": "pseudo-instructions",
+            "path": "pseudo-instructions"
+        },
+        {
+            "name": "second-operand",
+            "path": "second-operand"
+        },
+        {
+            "name": "docs",
+            "path": "docs"
+        },
+        {
+            "path": "comparations"
+        }
+    ],
 	"settings": {}
 }
