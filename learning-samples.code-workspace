@@ -14,6 +14,9 @@
 		},
 		{
 			"path": "load_store_multi"
+		},
+		{
+			"path": "pseudo-instructions"
 		}
 	],
 	"settings": {}
