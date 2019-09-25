@@ -43,7 +43,6 @@ _Samples_:
 [[toc]](#table-of-contents)
 
 
-
 <a name="scaled-register-offset"></a>
 ##### 1.2. Scaled Register Offset #####
 

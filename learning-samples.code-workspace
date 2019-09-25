@@ -17,6 +17,9 @@
 		},
 		{
 			"path": "pseudo-instructions"
+		},
+		{
+			"path": "second-operand"
 		}
 	],
 	"settings": {}
