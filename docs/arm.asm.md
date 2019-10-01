@@ -14,6 +14,9 @@
 2.3. [stmda & stmed](#stmda-stmed)
 2.4. [ldmda & ldmfa](#ldmda-ldmfa)
 2.5. [the rest ...](#simd-the-rest)
+3. [Condition Flags](#condition-flags)
+3.1. [Condition Modifiers](#condition-modifiers)
+
 
 <a name="arm-addressing-modes"></a>
 #### 1. _ARM_ Addressing Modes ####
@@ -395,3 +398,41 @@ In case of the remining instructions which have the subfix **ib** - **increment 
 **stmfd** - store multiple _full descending_
 
 [[toc]](#table-of-contents)
+
+
+<a name="condition-flags"></a>
+#### 3. Condition Flags ####
+
+**CPRS** register contains the bit flags 31-28 which can keep the result of the executed operations/instructions and they can also be used to control whether or not some insutrctions are executed. Also these flags can be used in the branch (jump) instructions. 
+
+|31|30|29|28|27|26|25|24| 
+|-|-|-|-|-|-|-|-|
+|N|Z|C|V|Q|||J|
+
+**N** - This bit is set to **1** if the signed result of an operation is *negative* and is set to **0** if the signed result of an operation is *positive* or *zero*.
+
+**Z** - This bit is set to **1** if the result of an operation is *zero* and set to **0** if the result of an operation is *non-zero*.
+
+**C** - This bit is **set** if an add operation results into a *carry out* of the most significant bit, or if an substract operation **DOES NOT** result in a *borrow*. For *shift* operations this bit is set to the **value** of the bit shifted out by the shifter.  **IMPORTANT** ARM uses an **inverted** carry flag for **borrow**.
+
+**V** - This bit is **set** if for an addition or substraction an signed overflow occurs.
+
+<a name="condition-modifiers"></a>
+#### 3.1. Condition Modifiers ####
+
+| \<cond\> | meaning | op |
+|:-:|-|:-:|
+| al | always (default condition) |
+| eq | **Z** set ( equal in a *cmp* ) | signed |
+| ne | **Z** clear ( not equal in a *cmp* ) | signed |
+| ge | ( **N** set and **V** set )  OR  ( **N** clear and **V** clear ) | signed |
+| gt | ( **Z** clear ) AND ( ( **N** clear and **V** clear ) OR ( **N** clear and **V** set ) ) | signed |
+| le | (**Z** set ) OR  ( **N** clear and **V** set ) OR ( **N** set and **V** clear ) ) | signed |
+| lt | ( **N** set and **V** clear )  OR  ( **N** clear  and **V** set ) | signed |
+| hi | **Z** clear AND **C** set | unsigned |
+| ls | **Z** set OR **C** clear | unsigned |
+
+
+[[toc]](#table-of-contents)
+
+
