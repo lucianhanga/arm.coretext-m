@@ -9,6 +9,9 @@ fmt2:   .string     "r5 bigger (r4=%d r5=%d)\n"
         
 main:	stmfd   sp!, {lr}
 
+        mov     r1, #-1         @ 
+
+
 br0:    mov     r4, #100        @ since r4 is bigger then r5 the sub does not 
         mov     r5, #99         @ use borrow which means that the CARRY flag is
         subs    r3, r4, r5      @ set. Remember: REVERSE CARRY!
