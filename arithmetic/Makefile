@@ -1,5 +1,6 @@
-target	 = comparations
-target2  = branches
+target	 = add-vars
+target2  = add-loop
+target3  = add-vector
 
 sources  = $(target:=.s) # add here all the sources
 listings = $(sources:.s=.lst)
@@ -9,7 +10,11 @@ sources2  = $(target2:=.s) # add here all the sources
 listings2 = $(sources2:.s=.lst)
 objects2  = $(sources2:.s=.o)
 
-all:	$(target) $(target2)
+sources3  = $(target3:=.s) # add here all the sources
+listings3 = $(sources3:.s=.lst)
+objects3  = $(sources3:.s=.o)
+
+all:	$(target) $(target2) $(target3)
 
 # $@ - is the target
 # $+ - is the dependencies list (or $^)
@@ -23,11 +28,15 @@ ${target2}:	$(objects2)
 		@echo "build the target: $@ ..."
 		gcc -o $@ $+
 
+${target3}:	$(objects3)
+		@echo "build the target: $@ ..."
+		gcc -o $@ $+
+
 %.o:	%.s
 		@echo "build the dependency: $< ..."
 		as -a=$(@:.o=.lst) -o $@ $<
 
 clean:
 		@echo "cleaning up ..."
-		rm -vf $(listings) ${objects} ${target} ${target2}
+		rm -vf $(listings) ${objects} ${target} ${target2} $(target3)
 
