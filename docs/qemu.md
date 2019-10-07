@@ -41,3 +41,6 @@ https://en.wikipedia.org/wiki/Binfmt_misc
 
 
 https://wiki.debian.org/QemuUserEmulation
+
+
+qemu-system-arm    -kernel kernel-qemu-4.14.79-stretch    -dtb versatile-pb.dtb    -m 256 -M versatilepb -cpu arm1176    -serial stdio    -append "rw console=ttyAMA0 root=/dev/sda2 rootfstype=ext4  loglevel=8 rootwait fsck.repair=yes memtest=1"    -drive file=rpi.qcow2    -no-reboot    -net user,hostfwd=tcp::10022-:22    -net nic

@@ -38,5 +38,7 @@ ${target3}:	$(objects3)
 
 clean:
 		@echo "cleaning up ..."
-		rm -vf $(listings) ${objects} ${target} ${target2} $(target3)
+		rm -vf $(listings) ${objects} ${target} \
+			$(listings2) ${objects2} ${target2} \
+			$(listing3) ${object3} $(target3)
 

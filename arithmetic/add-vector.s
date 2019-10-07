@@ -37,7 +37,7 @@ for_loop_exit:
             @ print vector
             ldr     r0, =fmt1
             bl      printf
-            
+
             ldr     r2, =vector3
             mov     r5, #0
 for_loop2:             
