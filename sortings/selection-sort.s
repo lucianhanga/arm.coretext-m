@@ -1,10 +1,26 @@
-@--------1---------2---------3---------4---------5---------6---------7---------8
-@       
-@
+//-------1---------2---------3---------4---------5---------6---------7---------8
+//      
+// Selection Sort
+//
+//    Sorts an array by repeatedly finding the  minimum element (ascending 
+//    sorting) from the unsorted part and putting it at the beginning. The
+//    algorithm maintains two subarrays in a given array:
+//      - The subarray which is already sorted 
+//      - Remaining subarray which is unsorted
+//    example arr  = 12 14 29 17 09 56 98 11 10 06 88 01 
+//    The ordered subarray has at first 0 elements and search through the
+//    unordered one the minimum which is 01 and swap it the first element in
+//    unordered array, here would be 12. Then the array will look:
+//      arr = 01  14 29 17 09 56 98 11 10 06 88 12
+//    Next iterration would be:
+//      arr = 01 06   29 17 09 56 98 11 10 14 88 12
+//   and so on ...
+//
+
+
             .data
 arr:        .word       12, 03, 89, 16, 22, 19, 67, 04, 12, 98, 02, 55
             .word       82, 23, 19, 46, 12, 29, 77, 24, 42, 18, 62, 51
-@arr:        .word       12, 03, 89
             .equ        arr_size, (. - arr) >> 2
 fmt1:       .string     "UnSorted: "
 fmt2:       .string     "Sorted:   "
