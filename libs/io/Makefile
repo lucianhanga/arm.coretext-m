@@ -2,8 +2,8 @@ objdir = obj
 bindir = ../bin
 libdir = ../lib
 
-library	 = lh-sorting.a
-sources	 = bubble-sort.s
+library	 = lh-io.a
+sources	 = print-array.s
 
 # listings = $(sources:.s=.lst)
 # objects  = $(sources:.s=.o)
@@ -27,4 +27,7 @@ $(objdir)/%.o:	%.s
 clean:
 		@echo "cleaning up ..."
 		rm -rf $(objdir) $(libdir)/$(library)
+
+
+
 

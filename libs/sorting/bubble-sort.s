@@ -1,21 +1,21 @@
-//-------1---------2---------3---------4---------5---------6---------7---------8
-//      
-// Bubble Sort
-//
-//  It works by repatedly swapping the adjacent elemnts of an array if they are
-//  in the old order. This procedure is repeted until in a round no swaps
-//  occured, which means that all of the elements are in order.
-// 
-//  https://www.geeksforgeeks.org/sorting-algorithms/
-//
+@--------1---------2---------3---------4---------5---------6---------7---------8
+@      
+@  Bubble Sort
+@
+@   It works by repatedly swapping the adjacent elemnts of an array if they are
+@   in the old order. This procedure is repeted until in a round no swaps
+@   occured, which means that all of the elements are in order.
+@ 
+@   https://www.geeksforgeeks.org/sorting-algorithms/
+@
 
             .text
-            .global sort_bubble
+            .global lh_sort_bubble
 
 @ parameters:
 @       r0: the address of the vector (pointer to a unsigned 32bit value)
 @       r1: the size of the vector (the size of the vector)
-sort_bubble:
+lh_sort_bubble:
             stmfd   sp!, {lr}       @ store the return address (Link Register)
             stmfd   sp!, {r3-r10}   @ store the non-volative register
 
@@ -30,7 +30,7 @@ dirty       .req    r2              @ dirty flag which indicates that in the
             mov     dirty, #true    @ dirty <- TRUE
  
 while_loop: cmp     dirty, #false   @ check the exit condition
-            beq     e_while_loop_exit @ if NOT dirty exit the loop 
+            beq     while_loop_exit @ if NOT dirty exit the loop 
             mov     dirty, #false   @ clear the dirty flag dirty <- FALSE
             mov     i, #0
 
