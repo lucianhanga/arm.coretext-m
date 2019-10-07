@@ -5,6 +5,8 @@
 //  It works by repatedly swapping the adjacent elemnts of an array if they are
 //  in the old order. This procedure is repeted until in a round no swaps
 //  occured, which means that all of the elements are in order.
+// 
+//  https://www.geeksforgeeks.org/sorting-algorithms/
 //
 
             .data
