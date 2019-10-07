@@ -25,10 +25,6 @@
             "path": "second-operand"
         },
         {
-            "name": "docs",
-            "path": "docs"
-        },
-        {
             "path": "comparations"
         },
         {

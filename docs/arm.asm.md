@@ -16,6 +16,8 @@
 2.5. [the rest ...](#simd-the-rest)
 3. [Condition Flags](#condition-flags)
 3.1. [Condition Modifiers](#condition-modifiers)
+4. [Routines](#routines)
+4.1. [Calling SubRoutines](#calling_subroutines)
 
 
 <a name="arm-addressing-modes"></a>
@@ -418,7 +420,7 @@ In case of the remining instructions which have the subfix **ib** - **increment 
 **V** - This bit is **set** if for an addition or substraction an signed overflow occurs.
 
 <a name="condition-modifiers"></a>
-#### 3.1. Condition Modifiers ####
+##### 3.1. Condition Modifiers #####
 
 | \<cond\> | meaning | op |
 |:-:|-|:-:|
@@ -436,3 +438,101 @@ In case of the remining instructions which have the subfix **ib** - **increment 
 [[toc]](#table-of-contents)
 
 
+<a name="routines"></a>
+#### 4. Routines ####
+
+All processor families have their own standard methods, or _function calling conventions_ which specify how arguments are passed to subroutines and how function values are returned.
+The basic subroutine calling rules for the ARM processor are the following:
++ The first four arguments go in the registers **r0-r3** 
++ Any remaining arugments are pushed to the **Stack**
++ The return value, if exists, is stored in **r0** before return to caller
+
+Some of the ARM processor register have special purposes that are dictated by the hardware design. Other have special purposes dictated by _programming conventions_. Programmers follow these conventions to make their subroutines compatible with each other. These conventions are a set of rules on how the registers should be used:
+
++ **Parameter Registers** are the registers **r0-r3** also know as _a1-a4_ arguments 1 to 4. Are used to pass the arguments into a subroutine and **a0** return the result value from a function. Them may also be used to hold intermediate values withing a routine.
+Caller assumes they will be modified.
+
++ **Variable Registers** are the registers **r4-r11** also know as _v1-v8_ which can be used to hold local  _variables_. A routine **must** preserve (save and restore) them if they modified, by pushing them to the stack at the begging of the function (subroutine) and poped before the return.
+The **r11** also know as **fp** (Frame Pointer) is used by the C compiler to track the _stack frame_.
+
++ **Intra-Procedure Scratch Register: r12** it is used by the C Library when calling dynamically linked functions. If the function does not make any C library function calls, then the r12 can be used to store local variables.
+
+[[toc]](#table-of-contents)
+
+
+<a name="calling_subroutines"></a>
+#### 4.1. Calling SubRoutines ####
+
+Besides the argument registers also the following registers invloved into subroutine calls:
+|       |                |      |
+|-------|----------------|------|
+|**sp** | Stack Pointer  | (r13)|
+|**lr** | Link Register  | (r14)|
+|**pc** | Program Counter| (r15)|
+
+When calling a subroutine, the caller must place the arguments in the _argument registers_ and possibly also on the _stack_. Placing the arguments at the appropriate locations is called **marshaling the arguments**. 
+
+After marshaling, the caller executes the **bl** instruction which will modify the **pc** (program counter) and the **lr** (link register). The **bl** will copy the contents of the **pc** into **lr** then it loads the **pc** with the address of the first instruction of the routine that is beeing called.
+
+If the subroutine has less then 4 parameters then the r0-r3 are used for parameters marshaling. The following example is a simple `printf` function call
+with 4 arguments.
+```C
+    printf(formatstr, a, b, c)
+```
+In ARM assembly it will look similar with:
+
+```asm
+    ldr     r0, =formatstr
+    ldr     r1, =a
+    ldr     r1, [r1]
+    ldr     r2, =b
+    ldr     r2, [r2]
+    ldr     r3, =c
+    ldr     r3, [r3]
+```
+
+If there are more arguments the number or arguments which excede 4 will be pushed to the stack in reverse order.
+
+```C
+    printf(formatstr, a, b, c, d, e)
+```
+In ARM assembly it will look similar with:
+
+```asm
+    ldr     r0, =e              @ load the address of the last parameter
+    ldr     r0, [r0]            @ load the value of the last parameter
+    str     r0, [sp, #-4]!      @ decrement the SP with 4 and store the r0
+    ldr     r0, =d              @ repeat the same thing with the argument 5
+    ldr     r0, [r0]            @ 
+    str     r0, [sp, #-4]!      @ 
+    ldr     r0, =formatstr      @ the rest of parameters put them on stack
+    ldr     r1, =a
+    ldr     r1, [r1]
+    ldr     r2, =b
+    ldr     r2, [r2]
+    ldr     r3, =c
+    ldr     r3, [r3]
+    bl      =printf             @ call the function
+    add     sp, sp, #8          @ remove the params from the stack
+```
+
+Another, way to write the function call above is to take advantage of the _multiple load/store instructions_: **stmfd** and **ldmfd**.
+
+```asm
+    ldr     r0, =e              @ load the address of the last parameter
+    ldr     r0, [r0]            @ load the value of the last parameter
+    ldr     r1, =d              @ repeat the same thing with the argument 5
+    ldr     r1, [r1]            @ 
+    stmfd   sp!, {r0,r1}        @ store to stack the r0 and r1
+    ldr     r0, =formatstr      @ the rest of parameters put them on stack
+    ldr     r1, =a
+    ldr     r1, [r1]
+    ldr     r2, =b
+    ldr     r2, [r2]
+    ldr     r3, =c
+    ldr     r3, [r3]
+    bl      =printf             @ call the function
+    add     sp, sp, #8          @ remove the params from the stack
+```
+
+[[toc]](#table-of-contents)
