@@ -1,6 +1,6 @@
 @--------1---------2---------3---------4---------5---------6---------7---------8
 @
-@ Test programm for the sort library: lh_sort_bubble
+@ Test programm for the sort library: lh_sort_selection
 @
 
             .data
@@ -27,7 +27,7 @@ main:       stmfd   sp!, {lr}
             @ call the sorting function
             ldr     r0, =arr
             mov     r1, #arr_size
-            bl      lh_sort_bubble
+            bl      lh_sort_selection
 
             @ print the sorted array
             ldr     r0, =fmt_txt2
