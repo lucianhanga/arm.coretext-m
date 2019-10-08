@@ -32,6 +32,9 @@
         },
         {
             "path": "sortings"
+        },
+        {
+            "path": "loops"
         }
     ],
 	"settings": {}
