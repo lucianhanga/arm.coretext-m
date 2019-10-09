@@ -97,7 +97,7 @@ ra_temp2    .req    r7
             str     ra_temp2, [ra_arr]
             str     ra_temp,  [ra_arr, r1, lsl #2]
             @ prepare the recursive call
-            sub     r0, ra_arr, #4  @ array pointer advance 1 element
+            add     r0, ra_arr, #4  @ array pointer advance 1 element
             sub     r1, ra_arr_size, #2 @ shave also an element from the back
             @ decrease with 2 because 1 in the front and one in the back
             bl      reverse_array   @ recursive call
