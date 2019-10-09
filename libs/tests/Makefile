@@ -17,7 +17,12 @@ sources3 = $(target3:=.s) # add here all the sources
 objects3 := $(patsubst %.s,$(objdir)/%.o,$(sources3))
 listings3 := $(patsubst %.s,$(objdir)/%.lst,$(sources3))
 
-all:	$(target1) $(target2) $(target3)
+target4 = test-vector-compare
+sources4 = $(target4:=.s) # add here all the sources
+objects4 := $(patsubst %.s,$(objdir)/%.o,$(sources4))
+listings4 := $(patsubst %.s,$(objdir)/%.lst,$(sources4))
+
+all:	$(target1) $(target2) $(target3) $(target4)
 
 # $@ - is the target
 # $+ - is the dependencies list (or $^)
@@ -35,6 +40,11 @@ $(target2):	$(objects2)
 		gcc -o $(bindir)/$@ $+ $(libdir)/lh-sorting.a $(libdir)/lh-io.a
 
 $(target3):	$(objects3)
+		mkdir -p $(bindir)
+		@echo "build the target: $@ ..."
+		gcc -o $(bindir)/$@ $+ $(libdir)/lh-io.a $(libdir)/lh-vector.a
+
+$(target4):	$(objects4)
 		mkdir -p $(bindir)
 		@echo "build the target: $@ ..."
 		gcc -o $(bindir)/$@ $+ $(libdir)/lh-io.a $(libdir)/lh-vector.a

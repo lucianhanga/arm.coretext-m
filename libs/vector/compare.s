@@ -15,10 +15,10 @@
 @       r0 <-- 0 : IDENTICAL
 @
 @   
-@
+
             .text
-            .global lh_vector_reverse
-lh_vector_reverse:
+            .global lh_vector_compare
+lh_vector_compare:
             stmfd   sp!, {lr}       @ store the return address (Link Register)
             stmfd   sp!, {r4-r5}    @ store the non-volative register
 
@@ -34,11 +34,12 @@ size        .req    r2
 i           .req    r3              @ loop index
 elm1        .req    r4
 elm2        .req    r5
+            mov     i, #0           @ initialize the loop counter
 loop:       cmp     i, size         @ check the exit condition
             bge     loop_exit
             ldr     elm1, [arr1],#4 @ load the element and then advance
             ldr     elm2, [arr2],#4 @ load the element and then advance
-            tst     elm1, elm2      @ bit compare the elements 
+            cmp     elm1, elm2      @ bit compare the elements 
             movne   r0, #1          @ if not equal prepare the return code 1
             bne     ret             @ exit the loop and return 1
             add     i, i, #1        @ increment the counter
