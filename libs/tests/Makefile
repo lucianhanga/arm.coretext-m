@@ -22,7 +22,12 @@ sources4 = $(target4:=.s) # add here all the sources
 objects4 := $(patsubst %.s,$(objdir)/%.o,$(sources4))
 listings4 := $(patsubst %.s,$(objdir)/%.lst,$(sources4))
 
-all:	$(target1) $(target2) $(target3) $(target4)
+target5 = test-insertion-sort
+sources5 = $(target5:=.s) # add here all the sources
+objects5 := $(patsubst %.s,$(objdir)/%.o,$(sources5))
+listings5 := $(patsubst %.s,$(objdir)/%.lst,$(sources5))
+
+all:	$(target1) $(target2) $(target3) $(target4) $(target5)
 
 # $@ - is the target
 # $+ - is the dependencies list (or $^)
@@ -48,6 +53,11 @@ $(target4):	$(objects4)
 		mkdir -p $(bindir)
 		@echo "build the target: $@ ..."
 		gcc -o $(bindir)/$@ $+ $(libdir)/lh-io.a $(libdir)/lh-vector.a
+
+$(target5):	$(objects5)
+		mkdir -p $(bindir)
+		@echo "build the target: $@ ..."
+		gcc -o $(bindir)/$@ $+ $(libdir)/lh-sorting.a $(libdir)/lh-io.a
 
 $(objdir)/%.o:	%.s
 		mkdir -p $(objdir)

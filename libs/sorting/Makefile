@@ -3,7 +3,7 @@ bindir = ../bin
 libdir = ../lib
 
 library	 = lh-sorting.a
-sources	 = bubble-sort.s selection-sort.s
+sources	 = bubble-sort.s selection-sort.s insertion-sort.s
 
 objects  := $(patsubst %.s,$(objdir)/%.o,$(sources))
 listings := $(patsubst %.s,$(objdir)/%.lst,$(sources))
