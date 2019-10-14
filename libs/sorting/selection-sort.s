@@ -75,7 +75,7 @@ loop_rounds_end:
 
 ret:        mov     r0, #0          @ prepare the return code
             ldmfd   sp!, {lr}       @ recover the lr from stack
-            mov     pc, lr          @ return from main			 
+            mov     pc, lr          @ return to the caller 
 
 
 @ literal pool
