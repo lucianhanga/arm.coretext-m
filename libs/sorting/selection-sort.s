@@ -23,8 +23,8 @@
             .text
             .global     lh_sort_selection
 @ parameters
-@       r0: the address of the vector (pointer to a unsigned 32bit value)
-@       r1: the size of the vector (the size of the vector)
+@       r0: the address of the vector (pointer to an unsigned 32bit value)
+@       r1: the size of the vector (the number of  elements of  the vector)
 lh_sort_selection:
             stmfd   sp!,  {lr}      @ save the return address
             @ function parameters
