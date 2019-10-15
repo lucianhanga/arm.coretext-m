@@ -3,7 +3,7 @@ bindir = ../bin
 libdir = ../lib
 
 library	 = lh-vector.a
-sources	 = reverse.s compare.s
+sources	 = reverse.s compare.s lsl.s
 
 objects  := $(patsubst %.s,$(objdir)/%.o,$(sources))
 listings := $(patsubst %.s,$(objdir)/%.lst,$(sources))
