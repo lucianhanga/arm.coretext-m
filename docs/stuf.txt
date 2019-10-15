@@ -1,0 +1,25 @@
+
+
+install debian on virt
+
+https://translatedcode.wordpress.com/2016/11/03/installing-debian-on-qemus-32-bit-arm-virt-board/
+
+
+ARMEL & ARMHF
+https://www.debian.org/ports/arm/
+https://blogs.oracle.com/jtc/is-it-armhf-or-armel
+
+https://en.wikipedia.org/wiki/Binfmt_misc
+
+
+https://wiki.debian.org/QemuUserEmulation
+
+
+qemu-system-arm    -kernel kernel-qemu-4.14.79-stretch    -dtb versatile-pb.dtb    -m 256 -M versatilepb -cpu arm1176    -serial stdio    -append "rw console=ttyAMA0 root=/dev/sda2 rootfstype=ext4  loglevel=8 rootwait fsck.repair=yes memtest=1"    -drive file=rpi.qcow2    -no-reboot    -net user,hostfwd=tcp::10022-:22    -net nic
+
+
+
+
+http://shukra.cedt.iisc.ernet.in/edwiki/EmSys:Starting_Cortex-M3_Development_Using_the_GNU_Tool_Chain_-_Part_1
+http://shukra.cedt.iisc.ernet.in/edwiki/EmSys:Starting_Cortex-M3_Development_Using_the_GNU_Tool_Chain_-_Part_2
+http://shukra.cedt.iisc.ernet.in/edwiki/Main_Page
