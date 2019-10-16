@@ -25,7 +25,7 @@ fill        .req    r3
 p_arr_i     .req    r4              @ the source pointer
 p_arr_j     .req    r5              @ the destination pointer
 temp        .req    r6
-
+            stmfd   sp!, {r4-r7}    @ save the non-volatile registers
             @ prepare the source and destination pointers
             add     p_arr_j, p_arr, arr_size, lsl #2 @ set destination as last 
             sub     p_arr_i, p_arr_j, shift, lsl #2  @ set the source 
@@ -38,6 +38,7 @@ loop2:      cmp     p_arr_j, p_arr  @ empty spaces will with 'fill' value
             bgt     loop2           @ close the loop
 
 ret:        mov     r0, #0
+            ldmfd   sp!, {r4-r7}    @ restore the non-volatile registers
             ldmfd   sp!, {lr}
             mov     pc, lr
 
