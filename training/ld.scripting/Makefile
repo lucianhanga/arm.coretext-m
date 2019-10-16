@@ -1,22 +1,22 @@
 CROSS_AS=arm-none-eabi-as 
 CROSS_LD=arm-none-eabi-ld
 CROSS_CC=arm-none-eabi-gcc
+CROSS_OC=arm-none-eabi-objcopy
 
-target	 = file1
 
-sources  = $(target:=.s) # add here all the sources
-listings = $(sources:.s=.lst)
-objects  = $(sources:.s=.o)
+all:	file1.bin file11.bin
 
-all:	$(target)
+file1.elf:	file1.o file1.ld
+	$(CROSS_LD) -T file1.ld -Map=file1.map -o file1.elf file1.o 
 
-# $@ - is the target
-# $+ - is the dependencies list (or $^)
-# $< - the first in the dependency list (source for target)
+file1.bin:	file1.elf
+	$(CROSS_OC) -O binary file1.elf file1.bin 
 
-${target}:	$(objects)
-		@echo "build the target: $@ ..."
-		$(CROSS_LD) -T$(@:=.ld) -Map=$(@:=.map) -o $@ $+
+file11.elf:	file1.o file11.ld
+	$(CROSS_LD) -T file11.ld -Map=file11.map -o file11.elf file1.o 
+
+file11.bin:	file11.elf
+	$(CROSS_OC) -O binary file11.elf file11.bin 
 
 %.o:	%.s
 		@echo "build the dependency: $< ..."
@@ -24,6 +24,8 @@ ${target}:	$(objects)
 
 clean:
 		@echo "cleaning up ..."
-		rm -vf $(listings) ${objects} ${target} *.map
+		rm -vf *.lst *.map *.bin *.o *.bin *.elf
+
+
 
 

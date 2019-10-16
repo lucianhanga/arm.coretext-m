@@ -1,40 +1,40 @@
 {
 	"folders": [
-		{
-			"path": "."
-		},
-		{
-			"path": "/Users/lucianhanga/Documents/lgit/arm.cortex-m.git/training/loops"
-		},
-		{
-			"path": "/Users/lucianhanga/Documents/lgit/arm.cortex-m.git/training/printf_params"
-		},
-		{
-			"path": "/Users/lucianhanga/Documents/lgit/arm.cortex-m.git/training/pseudo-instructions"
-		},
-		{
-			"path": "/Users/lucianhanga/Documents/lgit/arm.cortex-m.git/training/second-operand"
-		},
-		{
-			"path": "/Users/lucianhanga/Documents/lgit/arm.cortex-m.git/training/simple_c"
-		},
-		{
-			"path": "/Users/lucianhanga/Documents/lgit/arm.cortex-m.git/training/sortings"
-		},
-		{
-			"path": "/Users/lucianhanga/Documents/lgit/arm.cortex-m.git/training/subroutines"
-		},
-		{
-			"path": "/Users/lucianhanga/Documents/lgit/arm.cortex-m.git/training/addressing"
-		},
-		{
-			"path": "/Users/lucianhanga/Documents/lgit/arm.cortex-m.git/training/arithmetic"
-		},
-		{
-			"path": "/Users/lucianhanga/Documents/lgit/arm.cortex-m.git/training/comparations"
-		},
-		{
-			"path": "/Users/lucianhanga/Documents/lgit/arm.cortex-m.git/training/ld-scrips"
-		}
-	]
+        {
+            "path": "."
+        },
+        {
+            "path": "/Users/lucianhanga/Documents/lgit/arm.cortex-m.git/training/loops"
+        },
+        {
+            "path": "/Users/lucianhanga/Documents/lgit/arm.cortex-m.git/training/printf_params"
+        },
+        {
+            "path": "/Users/lucianhanga/Documents/lgit/arm.cortex-m.git/training/pseudo-instructions"
+        },
+        {
+            "path": "/Users/lucianhanga/Documents/lgit/arm.cortex-m.git/training/second-operand"
+        },
+        {
+            "path": "/Users/lucianhanga/Documents/lgit/arm.cortex-m.git/training/simple_c"
+        },
+        {
+            "path": "/Users/lucianhanga/Documents/lgit/arm.cortex-m.git/training/sortings"
+        },
+        {
+            "path": "/Users/lucianhanga/Documents/lgit/arm.cortex-m.git/training/subroutines"
+        },
+        {
+            "path": "/Users/lucianhanga/Documents/lgit/arm.cortex-m.git/training/addressing"
+        },
+        {
+            "path": "/Users/lucianhanga/Documents/lgit/arm.cortex-m.git/training/arithmetic"
+        },
+        {
+            "path": "/Users/lucianhanga/Documents/lgit/arm.cortex-m.git/training/comparations"
+        },
+        {
+            "path": "/Users/lucianhanga/Documents/lgit/arm.cortex-m.git/training/ld.scripting"
+        }
+    ]
 }
