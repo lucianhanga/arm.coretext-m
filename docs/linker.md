@@ -6,7 +6,8 @@
 2. [arm linker ](#arm_linker)
 [2.1. Generic](#arm_linker_generic)
 [2.2. About Linker Scripts](#arm_linker_about_linker_scripts)
-[2.3. Linker Script Concepts](arm_linker_script_concepts)
+[2.3. Linker Script Concepts](#arm_linker_script_concepts)
+[2.4. Linker Script Format](#arm_linker_script_format)
 
 
 <a name="arm_objdump"></a>
@@ -172,36 +173,116 @@ Every **loadable** or **allocatable** section has two addresses:
 
 Most of the time these adresses are identical. A tipical example when they are different is then the data section is loaded into ROM, and then copied into RAM when the program starts. In this scenario the ROM address is the LMA and the RAM address is the VMA.
 
-To see the section use the following command:
-```
-$ arm-none-eabi-objdump -h file2.o 
+To see the section use the following command:```$ arm-none-eabi-objdump -h```. Refer to the  ``objdump`` section in this document.
 
-file2.o:     file format elf32-littlearm
-Sections:
-Idx Name          Size      VMA       LMA       File off  Algn
-  0 .text         00000028  00000000  00000000  00000034  2**2
-                  CONTENTS, ALLOC, LOAD, READONLY, CODE
-  1 .data         00000048  00000000  00000000  0000005c  2**0
-                  CONTENTS, ALLOC, LOAD, DATA
-  2 .bss          00000000  00000000  00000000  000000a4  2**0
-                  ALLOC
-  3 .ARM.attributes 00000012  00000000  00000000  000000a4  2**0
-                  CONTENTS, READONLY
-```
-And the sections dump for en e executable:
-```
-$ arm-none-eabi-objdump -h file2
+[[toc]](#table-of-contents)
 
-file2:     file format elf32-littlearm
+<a name="arm_linker_script_format"></a>
+##### 2.4. Linker Script Format #####
+
+The simplest possible linker script has just the **SECTIONS** command and its used to describe the memory layout of  the output file.
+
+To be able to show how t he **SECTIONS** command is working the following example will be taken:
+
+```
+           .data
+array1:     .word   0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77 ,0x88
+array1_size:.word   (. - array1) << 2
+
+            .bss
+var1:       .space  4
+
+            .text 
+            .global func1
+            .global main
+main:       stmfd   sp!, {lr}
+            ldmfd   sp!, {lr}
+            mov     r0, #0
+            mov     pc, lr
+
+func1:      stmfd   sp!, {lr}
+ret:        ldmfd   sp!, {lr}
+            mov     r0, #0
+            mov     pc, lr
+
+func2:      stmfd   sp!, {lr}
+ret2:       ldmfd   sp!, {lr}
+            mov     r0, #0
+            mov     pc, lr
+
+@ literal  pool
+cvar1:      .word   0xFF
+```
+After the compilation using the default linker script:
+```
+$ arm-none-eabi-as -o file1.o file1.s
+$ arm-none-eabi-ld -o file1 file1.o
+$ arm-none-eabi-objdump -h file1 
+file1:     file format elf32-littlearm
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
   0 .text         00000034  00008000  00008000  00008000  2**2
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  1 .data         0000006c  00018034  00018034  00008034  2**0
+  1 .data         00000024  00018034  00018034  00008034  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  2 .ARM.attributes 00000012  00000000  00000000  000080a0  2**0
+  2 .bss          00000004  00018058  00018058  00008058  2**0
+                  ALLOC
+  3 .ARM.attributes 00000012  00000000  00000000  00008058  2**0
                   CONTENTS, READONLY
 ```
 
+If the **text** should be loaded at address `0x00100000` and the **data** should start at address `0x80000000` the following script should be used:
+```
+    SECTIONS  
+    {
+        . = 0x00100000;
+        .text : { *(.text) }
+        . = 0x80000000;
+        .data : { *(.data) }
+        .bss : { *(.bss ) }
+    }
+```
+
+```
+$ arm-none-eabi-ld -T file1.ld -o file1 file1.o
+$ arm-none-eabi-objdump -t file1 
+
+file1:     file format elf32-littlearm
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         00000034  00100000  00100000  00010000  2**2
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .data         00000024  80000000  80000000  00020000  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  2 .bss          00000004  80000024  80000024  00020024  2**0
+                  ALLOC
+  3 .ARM.attributes 00000012  00000000  00000000  00020024  2**0
+                  CONTENTS, READONLY
+```
+
+Below can be seen the difference after linking was executed using the **`-T file1.ld`** option. Check out the values of the **VMA** and **LMA**.
+
+```
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         00000034  00008000  00008000  00008000  2**2
+  0 .text         00000034  00100000  00100000  00010000  2**2
+
+Idx Name          Size      VMA       LMA       File off  Algn
+  1 .data         00000024  00018034  00018034  00008034  2**0
+  1 .data         00000024  80000000  80000000  00020000  2**0
+ 
+Idx Name          Size      VMA       LMA       File off  Algn
+  2 .bss          00000004  00018058  00018058  00008058  2**0
+  2 .bss          00000004  80000024  80000024  00020024  2**0
+```
+
+The first line inside the **SECTIONS**:  "`. = 0x10000;`" uses a special symbol **.** (dot) which is the **location counter**. If there is no address specified for an output section. The adress is set from the current location counter value. The location counter is then incremented by the size of hte output section. At the start of the  **SECTIONS** command the **location counter** is set to `0`. 
+
+The next line: `.text : { *(.text) }` defines the output section `.text`. Inside the curly brackets after the output section name are enumerated all the input sections which should be placed into the specified output section. The expression `*(.text)` means all `.text` input sections in all input files.
+
+Since the location counter is `0x10000` when the output section `.text` is defined, the linker will set the address of the `.text` section in the output file to be `0x10000`.
+
+The remaining lines define the `.data` and `.bss` sections in the output file. The linker will place the `.data` output section at address `0x8000000`. After the linker places the `.data` output section, the value of the location counter will be `0x8000000` plus the size of the `.data` output section. The effect is that the linker will place the `.bss` output section immediately after the `.data` output section in memory.
 
 [[toc]](#table-of-contents)
