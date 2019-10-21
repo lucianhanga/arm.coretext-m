@@ -1,6 +1,6 @@
 @--------1---------2---------3---------4---------5---------6---------7---------8
 @
-@ Test programm for the vector library: lh_vector_subvector
+@ Test programm for the vector library: lh_vector_search
 @
             .data
 
@@ -22,7 +22,7 @@ sarr5:      .word   28, 29, 31
 fmt_txt:    .string "array:    "
 fmt2_txt:   .string "subarray: "
 fmt_nr:     .string "%02d "
-fmt_ret:    .string "lh_vector_subvector ret: %d\n"
+fmt_ret:    .string "lh_vector_search ret: %d\n"
 
             .text
             .global main
@@ -45,7 +45,7 @@ main:       stmfd   sp!, {lr}
             mov     r1, #arr_size
             ldr     r2, =sarr1
             mov     r3, #sarr1_size
-            bl      lh_vector_subvector
+            bl      lh_vector_search
             @ print the comparation result
             mov     r1, r0
             ldr     r0, =fmt_ret
@@ -62,7 +62,7 @@ main:       stmfd   sp!, {lr}
             mov     r1, #arr_size
             ldr     r2, =sarr2
             mov     r3, #sarr2_size
-            bl      lh_vector_subvector
+            bl      lh_vector_search
             @ print the comparation result
             mov     r1, r0
             ldr     r0, =fmt_ret
@@ -79,7 +79,7 @@ main:       stmfd   sp!, {lr}
             mov     r1, #arr_size
             ldr     r2, =sarr3
             mov     r3, #sarr3_size
-            bl      lh_vector_subvector
+            bl      lh_vector_search
             @ print the comparation result
             mov     r1, r0
             ldr     r0, =fmt_ret
@@ -96,7 +96,7 @@ main:       stmfd   sp!, {lr}
             mov     r1, #arr_size
             ldr     r2, =sarr4
             mov     r3, #sarr4_size
-            bl      lh_vector_subvector
+            bl      lh_vector_search
             @ print the comparation result
             mov     r1, r0
             ldr     r0, =fmt_ret
@@ -113,7 +113,7 @@ main:       stmfd   sp!, {lr}
             mov     r1, #arr_size
             ldr     r2, =sarr5
             mov     r3, #sarr5_size
-            bl      lh_vector_subvector
+            bl      lh_vector_search
             @ print the comparation result
             mov     r1, r0
             ldr     r0, =fmt_ret

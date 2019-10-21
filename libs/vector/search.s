@@ -8,7 +8,7 @@
 @ 
 
             .text
-            .global lh_vector_subvector
+            .global lh_vector_search
 @ parameters
 @   r0: address of the vector (pointer to an unsigned 32bit value)
 @   r1: size of the vector
@@ -18,7 +18,7 @@
 @   ret:  -1   the substring was not found 
 @         >=0  the substring was found and the return value is the index
 @
-lh_vector_subvector:
+lh_vector_search:
             stmfd   sp!, {lr}       @ store the Link Register
             stmfd   sp!, {r4-r10}   @ store the non-volatile registers
             @ function parameters
