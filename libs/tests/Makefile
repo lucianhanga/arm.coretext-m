@@ -37,13 +37,18 @@ sources7 = $(target7:=.s) # add here all the sources
 objects7 := $(patsubst %.s,$(objdir)/%.o,$(sources7))
 listings7 := $(patsubst %.s,$(objdir)/%.lst,$(sources7))
 
-target8 = test-vector-subvector
+target8 = test-vector-search
 sources8 = $(target8:=.s) # add here all the sources
 objects8 := $(patsubst %.s,$(objdir)/%.o,$(sources8))
 listings8 := $(patsubst %.s,$(objdir)/%.lst,$(sources8))
 
+target9 = test-vector-replace
+sources9 = $(target9:=.s) # add here all the sources
+objects9 := $(patsubst %.s,$(objdir)/%.o,$(sources9))
+listings9 := $(patsubst %.s,$(objdir)/%.lst,$(sources9))
+
 all:	$(target1) $(target2) $(target3) $(target4) $(target5) \
-		$(target6) $(target7) $(target8)
+		$(target6) $(target7) $(target8) $(target9)
 
 # $@ - is the target
 # $+ - is the dependencies list (or $^)
@@ -86,6 +91,11 @@ $(target7):	$(objects7)
 		gcc -o $(bindir)/$@ $+ $(libdir)/lh-vector.a $(libdir)/lh-io.a
 
 $(target8):	$(objects8)
+		mkdir -p $(bindir)
+		@echo "build the target: $@ ..."
+		gcc -o $(bindir)/$@ $+ $(libdir)/lh-vector.a $(libdir)/lh-io.a
+
+$(target9):	$(objects9)
 		mkdir -p $(bindir)
 		@echo "build the target: $@ ..."
 		gcc -o $(bindir)/$@ $+ $(libdir)/lh-vector.a $(libdir)/lh-io.a
