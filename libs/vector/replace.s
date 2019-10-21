@@ -38,11 +38,12 @@ loop:       stmfd   sp!, {r0-r4} @ store the regiters for call
             mov     r5, r0       @ save the result in r5 for further use
             ldmfd   sp!, {r0-r4} @ restore the registers after call
             cmp     r5, #-1
+            addne   r0, r0, r5, lsl #2  @ advance the p_arr to the occurrence
             @ call the replacement helper
-            @ blne    replace_helper
-            addne   r0, r0, r5, lsl #2  @ advance the p_arr over the first ...
-            addne   r0, r0, r3, lsl #2  @ occurence of the string
-            subne   r1, r1, r3          @ reduce the size of arr with arrs size
+            blne    replace_helper
+            addne   r0, r0, r3, lsl #2  @ move over the occurrence
+            subne   r1, r1, r5          @ reduce the size of the  arr accord.
+            subne   r1, r1, r3          @ 
             addne   counter, counter, #1
             blne    loop
 ret:
