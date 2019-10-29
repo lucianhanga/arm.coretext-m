@@ -95,8 +95,6 @@ int bn_mul(const unsigned char* u, const unsigned char *v, unsigned char *w) {
                 }
             }
     }
- 
-
     return 0;
 } 
 int bn_add(const unsigned char* u, const unsigned char *v, unsigned char *w) {
