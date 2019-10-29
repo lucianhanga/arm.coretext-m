@@ -1,6 +1,7 @@
 target	 = add-vars
 target2  = add-loop
 target3  = add-vector
+target4  = mul-simm
 
 sources  = $(target:=.s) # add here all the sources
 listings = $(sources:.s=.lst)
@@ -14,7 +15,11 @@ sources3  = $(target3:=.s) # add here all the sources
 listings3 = $(sources3:.s=.lst)
 objects3  = $(sources3:.s=.o)
 
-all:	$(target) $(target2) $(target3)
+sources4  = $(target4:=.s) # add here all the sources
+listings4 = $(sources4:.s=.lst)
+objects4  = $(sources4:.s=.o)
+
+all:	$(target) $(target2) $(target3) $(target4)
 
 # $@ - is the target
 # $+ - is the dependencies list (or $^)
@@ -32,6 +37,10 @@ ${target3}:	$(objects3)
 		@echo "build the target: $@ ..."
 		gcc -o $@ $+
 
+${target4}:	$(objects4)
+		@echo "build the target: $@ ..."
+		gcc -o $@ $+
+
 %.o:	%.s
 		@echo "build the dependency: $< ..."
 		as -a=$(@:.o=.lst) -o $@ $<
@@ -40,5 +49,7 @@ clean:
 		@echo "cleaning up ..."
 		rm -vf $(listings) ${objects} ${target} \
 			$(listings2) ${objects2} ${target2} \
-			$(listing3) ${object3} $(target3)
+			$(listing3) ${object3} $(target3) \
+			$(listing4) ${object4} $(target4)
+
 
